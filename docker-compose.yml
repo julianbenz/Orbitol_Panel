@@ -1,0 +1,56 @@
+x-common:
+  database: &db-environment
+    # Do not remove the "&db-password" from the end of the line below
+    MYSQL_PASSWORD: &db-password "CHANGE_ME"
+    MYSQL_ROOT_PASSWORD: "CHANGE_ME_TOO"
+
+services:
+  database:
+    image: mariadb:lts
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - "./database:/var/lib/mysql"
+    environment:
+      <<: *db-environment
+      MYSQL_DATABASE: "paymenter"
+      MYSQL_USER: "paymenter"
+    networks:
+      - paymenter_nw
+
+  cache:
+    image: redis:alpine
+    restart: always
+    networks:
+      - paymenter_nw
+
+  paymenter:
+    build: .
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - "./:/app/var/"
+      - "./storage/logs:/app/storage/logs"
+      - "./storage/app/public:/app/storage/app/public"
+      - "./themes:/app/themes"
+      - "./extensions:/app/extensions"
+    environment:
+      DB_PASSWORD: *db-password
+      APP_ENV: "production"
+      APP_URL: "https://orbitol.ch"
+      CACHE_STORE: "redis"
+      REDIS_HOST: "cache"
+      DB_CONNECTION: "mariadb"
+      DB_HOST: "database"
+      DB_PORT: "3306"
+      PAYMENTER_SKIP_DEFAULT: "false"
+    depends_on:
+      - database
+      - cache
+    networks:
+      - paymenter_nw
+
+networks:
+  paymenter_nw:
+    driver: bridge
