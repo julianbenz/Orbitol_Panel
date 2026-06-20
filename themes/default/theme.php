@@ -2,8 +2,8 @@
 
 return [
     'name' => 'Default',
-    'author' => 'Paymenter',
-    'url' => 'https://paymenter.org',
+    'author' => 'Orbitol',
+    'url' => 'https://orbitol.ch',
 
     'settings' => [
         [
@@ -44,7 +44,7 @@ return [
             'name' => 'home_page_text',
             'label' => 'Home Page Text',
             'type' => 'markdown',
-            'default' => 'Welcome to Paymenter!',
+            'default' => 'Welcome to Orbitol!',
         ],
         [
             'name' => 'primary',
