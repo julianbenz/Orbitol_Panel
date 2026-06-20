@@ -73,9 +73,10 @@ class UploadExtensionService
                 File::deleteDirectory($destinationPath);
             }
 
-            if (!rename($path, $destinationPath)) {
+            if (!File::copyDirectory($path, $destinationPath)) {
                 throw new \Exception('Failed to move the extension files to the destination.');
             }
+            File::deleteDirectory($path);
         } catch (\Exception $e) {
             // Clean up the extracted files in case of an error
             File::deleteDirectory($extractPath);
