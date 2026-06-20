@@ -38,7 +38,7 @@ services:
     environment:
       DB_PASSWORD: *db-password
       APP_ENV: "production"
-      APP_URL: "http://localhost:4763"
+      APP_URL: "https://panel-orbitol.jube.cc"
       CACHE_STORE: "redis"
       REDIS_HOST: "cache"
       DB_CONNECTION: "mariadb"
